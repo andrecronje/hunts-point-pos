@@ -13,7 +13,7 @@ pos.directive('navMenu',function ($location) {
       scope.isActive = function (url) {
         if (url === 'transactions')
           url = 'transaction';
-        
+
         url = '/' + url;
         return $location.path().indexOf(url) !== -1;
       }
@@ -40,7 +40,7 @@ pos.directive('productForm',function ($location) {
 
       scope.tabOnEnter = function ($event) {
         if ($event.keyCode === 13) {
-          $name.select(); 
+          $name.select();
           $event.preventDefault();
         }
       };
@@ -62,7 +62,7 @@ pos.directive('addManualItem',function () {
     },
     templateUrl: 'templates/directives/add-manual-item.html',
     link: function (scope, el) {
-      
+
       scope.add = function () {
         scope.manualItem.name = "----";
         scope.addItem({item: scope.manualItem});
@@ -75,7 +75,7 @@ pos.directive('addManualItem',function () {
 
 });
 
-pos.directive('checkout', function (Settings) {
+pos.directive('checkout', ['$http', function ($http, Settings) {
   return {
     restrict: 'E',
     scope: {
@@ -84,19 +84,35 @@ pos.directive('checkout', function (Settings) {
     },
     templateUrl: 'templates/directives/checkout.html',
     link: function (scope, el) {
-      
+
       $paymentField = el.find('form').eq(0).find('input').eq(0);
-      
+      setInterval(function() {
+        $http({method: 'GET', url:"http://18.221.128.6:8080/account/0x7d50c3c29B264b023d75C66e1A2a5834DD699633"}).then(function (result) {
+           console.log(result);
+           if (!this.balance) {
+             this.balance = result.data.balance
+           }
+           if (this.balance < result.data.balance) {
+             el.find('#fantom')[0].src = "images/paid.jpg"
+             scope.print()
+             scope.closeModal()
+           }
+        }, function (result) {
+
+        });
+      }, 1000)
+
+
       scope.focusPayment = function () {
         $('#checkoutPaymentAmount').select();
       };
-      
+
       scope.getChangeDue = function () {
         if (scope.paymentAmount && scope.paymentAmount > scope.cartTotal) {
           var change =  parseFloat(scope.paymentAmount) - parseFloat(scope.cartTotal);
           return change;
         }
-        else 
+        else
           return 0;
       };
 
@@ -123,7 +139,7 @@ pos.directive('checkout', function (Settings) {
     }
   };
 
-});
+}]);
 
 pos.directive('receipt',function (Settings) {
   return {
@@ -135,11 +151,11 @@ pos.directive('receipt',function (Settings) {
     link: function (scope) {
 
       scope.backupDate = new Date();
-      
+
       Settings.get().then(function (settings) {
         scope.settings = settings;
       });
-      
+
     }
   };
 

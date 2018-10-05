@@ -1,5 +1,19 @@
 body {
-	background-color: oldlace;
+	background-color: white;
+}
+
+a {
+	color:black;
+}
+
+.btn-info {
+	background-color: black;
+	border-color: black;
+}
+.btn-info:hover {
+	color:black;
+	background-color: white;
+	border-color: white;
 }
 
 .not-home {
@@ -74,7 +88,7 @@ table.pos tbody tr td input {
 }
 
 table.pos tbody tr td input:focus {
-	outline-color: transparent;	
+	outline-color: transparent;
 }
 
 table.pos tbody tr td input::-webkit-outer-spin-button,
@@ -84,7 +98,7 @@ table.pos tbody tr td input::-webkit-inner-spin-button {
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-table.receipt>tbody>tr>td, 
+table.receipt>tbody>tr>td,
 table.receipt>tfoot>tr>td {
 	padding: 10px;
 }
